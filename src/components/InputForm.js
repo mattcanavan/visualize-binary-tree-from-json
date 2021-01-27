@@ -35,7 +35,7 @@ export default function InputForm(props) {
     const { userInput, setUserInput } = props
 
     return (
-      <div className="container">
+      <div className="input__container">
         <form>
           <label>
             <h1>USER INPUT</h1>

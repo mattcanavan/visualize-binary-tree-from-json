@@ -3,4 +3,8 @@
   border: 1px tomato solid;
 }
 
+.App__flexcontainer {
+  display: flex;
+  flex-direction: row;
+}
 

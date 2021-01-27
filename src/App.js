@@ -3,10 +3,11 @@ import './App.css';
 
 /// COMPONENTS ///
 import InputForm from './components/InputForm.js';
+import DisplayTree from './components/DisplayTree.js'
 
 
 function App() {
-  /// INITIAL STATE (GLOBAL) ///
+  /// INITIAL STATE ///
   const [userInput, setUserInput] = React.useState({
     userInput: JSON.parse(`{
     "value": 5,
@@ -30,10 +31,10 @@ function App() {
     }
 }`),
   });
+  const [finishedTree, setFinishedTree] = React.useState();
   const [output, setOutput] = React.useState();
 
   /// HELPER FUNCTIONS ///
-
   // Build Tree from (already parsed) JSON
   class Tree {
     constructor(value) {
@@ -62,41 +63,72 @@ function App() {
   }
 
   // Build OUTPUT Array
-  // function bread_first_traversal(tree){
+  function bread_first_traversal(tree){
 
-  //   // catch null case
-  //   if (tree === null){
-  //     return null
-  //   }
+    // catch null case
+    if (tree === null){
+      return null
+    }
 
-  //   const results = [];
-  //   const queue = [];
-  //   queue.append(tree);
+    const results = [];
+    const queue = [];
+    queue.push(tree);
 
-  //   while (queue.length > 0) {
-  //     let node = queue.pop(0);
+    while (queue.length > 0) {
+      let node = queue.shift();
 
-  //     if (node === "None") {
-  //       results.append("None")
-  //       continue
-  //     } else {
-  //       results.append(node.value)
-  //     }
+       //unsure how to fix this bug
+      if (node === undefined){
+        break
+      }
 
-  //     if (node.left === null)
+      if (node === "None") {
+        results.push("None")
+        continue
+      } else {
+        results.push(node.value)
+      }
 
-  //   }
-  // }
+      // check left
+      if (node.left === null) {
+        queue.push("None")
+      } else{
+        queue.push(node.left)
+      }
+
+      // check right
+      if (node.right === null) {
+        queue.push("None")
+      } else{
+        queue.push(node.right)
+      }
+    }
+    return results
+  }
 
   // useEFFECT
   // 1. build tree on any changes to userInput field
   React.useEffect(() => {
-    console.log("useEffect..", build_tree_from_json(userInput.userInput));
+    let data = build_tree_from_json(userInput.userInput);
+    setFinishedTree(data)
+    console.log("finishedTree...", finishedTree)
   }, [userInput]);
+
+  // 2. build bread_first array
+  React.useEffect( () => {
+    let data = bread_first_traversal(finishedTree)
+    setOutput(data)
+    console.log("finished breadth search...", output)
+  }, [finishedTree])
+
 
   return (
     <div className="App">
+      <div className="App__flexcontainer">
       <InputForm setUserInput={setUserInput} userInput={userInput} />
+
+      <DisplayTree breadth_first_trav_array={output} />
+      </div>
     </div>
   );
 }

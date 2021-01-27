@@ -3,13 +3,17 @@ import './App.css';
 
 /// COMPONENTS ///
 import InputForm from './components/InputForm.js';
-import DisplayTree from './components/DisplayTree.js'
+import Output from './components/Output.js';
+
+/// UTILS ///
+import { build_tree_from_json } from './utils/buildTreeFromJSON.js';
+import { breadth_first_traversal } from './utils/breadthFirstTraversal.js';
 
 
 function App() {
   /// INITIAL STATE ///
   const [userInput, setUserInput] = React.useState({
-    userInput: JSON.parse(`{
+    userInput: `{
     "value": 5,
     "left": {
         "value": 7,
@@ -29,105 +33,30 @@ function App() {
             "right": null
         }
     }
-}`),
+}`,
   });
-  const [finishedTree, setFinishedTree] = React.useState();
-  const [output, setOutput] = React.useState();
+  const [JSONtree, setJSONtree] = React.useState();
+  const [BFTarray, setBFTarray] = React.useState();
 
-  /// HELPER FUNCTIONS ///
-  // Build Tree from (already parsed) JSON
-  class Tree {
-    constructor(value) {
-      this.value = value;
-      this.left = null;
-      this.right = null;
-    }
-  }
-
-  function build_tree_from_json(clean_json) {
-    function build_tree(root_data) {
-      if (root_data === null) {
-        return null;
-      }
-
-      let new_node = new Tree(root_data["value"]);
-      new_node.left = build_tree(root_data["left"]);
-      new_node.right = build_tree(root_data["right"]);
-
-      return new_node;
-    }
-
-    const root = build_tree(clean_json);
-
-    return root;
-  }
-
-  // Build OUTPUT Array
-  function bread_first_traversal(tree){
-
-    // catch null case
-    if (tree === null){
-      return null
-    }
-
-    const results = [];
-    const queue = [];
-    queue.push(tree);
-
-    while (queue.length > 0) {
-      let node = queue.shift();
-
-       //unsure how to fix this bug
-      if (node === undefined){
-        break
-      }
-
-      if (node === "None") {
-        results.push("None")
-        continue
-      } else {
-        results.push(node.value)
-      }
-
-      // check left
-      if (node.left === null) {
-        queue.push("None")
-      } else{
-        queue.push(node.left)
-      }
-
-      // check right
-      if (node.right === null) {
-        queue.push("None")
-      } else{
-        queue.push(node.right)
-      }
-    }
-    return results
-  }
-
-  // useEFFECT
-  // 1. build tree on any changes to userInput field
+  /// useEFFECT ///
+  // 1. build JSONtree on any changes to userInput field
   React.useEffect(() => {
-    let data = build_tree_from_json(userInput.userInput);
-    setFinishedTree(data)
-    console.log("finishedTree...", finishedTree)
+    setJSONtree(build_tree_from_json(userInput.userInput));
   }, [userInput]);
 
-  // 2. build bread_first array
-  React.useEffect( () => {
-    let data = bread_first_traversal(finishedTree)
-    setOutput(data)
-    console.log("finished breadth search...", output)
-  }, [finishedTree])
-
+  // 2. build bread_first_trav array on any changes to JSONtree
+  React.useEffect(() => {
+    setBFTarray(breadth_first_traversal(JSONtree));
+  }, [JSONtree]);
 
   return (
     <div className="App">
       <div className="App__flexcontainer">
-      <InputForm setUserInput={setUserInput} userInput={userInput} />
 
-      <DisplayTree breadth_first_trav_array={output} finishedTree={finishedTree} />
+        <InputForm setUserInput={setUserInput} userInput={userInput} />
+
+        <Output BFTarray={BFTarray} JSONtree={JSONtree} />
+
       </div>
     </div>
   );

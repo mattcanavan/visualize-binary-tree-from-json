@@ -1,11 +1,14 @@
 import React from 'react';
 
-// STYLES
+/// STYLES ///
 import './InputForm.css';
 
-// INITAL VALUES
+/// PLACEHOLDER VALUE ///
 const example = `
-## json 
+
+PASTE JSON BLOB HERE...
+
+EXAMPLE:
 
 {
     "value": 5,
@@ -31,8 +34,9 @@ const example = `
 `;
 
 export default function InputForm(props) {
+
     /// PROPS ///
-    const { userInput, setUserInput } = props
+    const { setUserInput } = props
 
     return (
       <div className="input__container">
@@ -46,10 +50,9 @@ export default function InputForm(props) {
             className="field"
             name="textarea"
             type="textarea"
-            // value={JSON.stringify(userInput.userInput, null, 4)}
             placeholder={example}
             onChange={(e) => {
-                setUserInput({ ...userInput, userInput: JSON.parse(e.target.value) })
+                setUserInput({ userInput: e.target.value })
             }}
           />
         </form>

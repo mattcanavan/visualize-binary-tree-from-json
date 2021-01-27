@@ -6,6 +6,10 @@ import './InputForm.css';
 /// PLACEHOLDER VALUE ///
 const example = `
 
+PASTE JSON BLOB HERE...
+
+EXAMPLE:
+
 {
     "value": 5,
     "left": {

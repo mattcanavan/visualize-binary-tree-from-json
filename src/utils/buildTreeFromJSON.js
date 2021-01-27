@@ -19,9 +19,14 @@ import { Tree } from './treeClass.js'
       return new_node;
     }
 
-    const root = build_tree(JSON.parse(jsonIn)); //where should we be parsing the userInput??
-
-    return root;
+    try{
+      const root = build_tree(JSON.parse(jsonIn)); //where should we be parsing the userInput??
+  
+      return root;
+    }
+    catch{
+      // hacky solution to JSON parsing error 
+    }
   }
 
 export { build_tree_from_json }

@@ -1,7 +1,13 @@
 import { Tree } from './treeClass.js'
 
-  function build_tree_from_json(clean_json) {
+  function build_tree_from_json(jsonIn) {
     function build_tree(root_data) {
+
+      // bug if this statement is missing
+      if (root_data === undefined){
+        return null
+      }
+
       if (root_data === null) {
         return null;
       }
@@ -13,7 +19,7 @@ import { Tree } from './treeClass.js'
       return new_node;
     }
 
-    const root = build_tree(clean_json);
+    const root = build_tree(JSON.parse(jsonIn)); //where should we be parsing the userInput??
 
     return root;
   }

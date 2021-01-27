@@ -65,13 +65,77 @@ import './DisplayTree.css';
 
 export default function DisplayTree(props) {
 
-    /// PROPS ///
-    const { breadth_first_trav_array } = props;
+    // LOCAL STATE
+    const [levels, setLevels] = React.useState();
 
-    // HELPER FUNCTIONS
-    function draw_tree(arrayIn){
-        
+    /// PROPS ///
+    const { breadth_first_trav_array, finishedTree } = props;
+
+    /// HELPER FUNCTIONS ///
+    //measure height of tree
+    function measure_height(tree){
+
+        if (tree === null){
+            return 0
+        }
+
+        let left_height = measure_height(tree.left);
+        let right_height = measure_height(tree.right);
+
+        let results = Math.max(left_height, right_height)
+
+        return results + 1
     }
+
+    //draw tree (pyramid)
+    function draw_tree(arrayIn, tree){
+
+        // for each row, how many nodes are possible
+        const row_and_nodes = {
+            // row: nodes
+            0: 1,
+            1: 2,
+            2: 4,
+            3: 8,
+            4: 16,
+            5: 32,
+        }
+
+        // how can i avoid doing this?
+        if (tree === undefined) {
+            return null
+        }
+
+        // first, measure tree height w/given function
+        let lh = measure_height(tree.left);
+        let rh = measure_height(tree.right);
+        const max_height = Math.max(lh, rh);
+
+        // now, we know how many levels to make
+        const results = [];
+        for (let i = 0; i <= max_height; i++){
+            let temp = [];
+
+            // calc slicing indices
+            let start = row_and_nodes[i] - 1;
+            let end = row_and_nodes[i + 1] - 1; //not inclusive
+
+            // creating array for each level
+            temp.push(arrayIn.slice(start, end))
+            console.log("temp", temp)
+
+            // storing each level in another array
+            results.push(temp)
+        }
+        return results
+    }
+
+    // useEFFECT
+    React.useEffect( () => {
+        setLevels(draw_tree(breadth_first_trav_array, finishedTree))
+        console.log('levels', levels)
+    }, [finishedTree])
+
 
     /// Display nothing if data hasnt loaded
     if (!breadth_first_trav_array){
@@ -80,9 +144,11 @@ export default function DisplayTree(props) {
 
     return (
         <div className="output__container">
-            <h1>{breadth_first_trav_array.slice(0,1)}</h1>
-            <h1>{breadth_first_trav_array.slice(1,3)}</h1>
-            <h1>{breadth_first_trav_array.slice(4,8)}</h1>
+            {levels && levels.forEach(element => (
+                element.forEach(item => (
+                    console.log("item", item[0])
+            ))
+            ))}
         </div>
     )
 }

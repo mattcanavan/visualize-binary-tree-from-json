@@ -127,7 +127,7 @@ function App() {
       <div className="App__flexcontainer">
       <InputForm setUserInput={setUserInput} userInput={userInput} />
 
-      <DisplayTree breadth_first_trav_array={output} />
+      <DisplayTree breadth_first_trav_array={output} finishedTree={finishedTree} />
       </div>
     </div>
   );

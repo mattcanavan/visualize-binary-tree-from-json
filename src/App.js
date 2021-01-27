@@ -13,7 +13,7 @@ import { breadth_first_traversal } from './utils/breadthFirstTraversal.js';
 function App() {
   /// INITIAL STATE ///
   const [userInput, setUserInput] = React.useState({
-    userInput: JSON.parse(`{
+    userInput: `{
     "value": 5,
     "left": {
         "value": 7,
@@ -33,7 +33,7 @@ function App() {
             "right": null
         }
     }
-}`),
+}`,
   });
   const [JSONtree, setJSONtree] = React.useState();
   const [BFTarray, setBFTarray] = React.useState();

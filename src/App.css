@@ -1,10 +1,11 @@
 * { 
   margin: 0;
-  border: 1px tomato solid;
+  /* border: 1px tomato solid; */
 }
 
 .App__flexcontainer {
   display: flex;
   flex-direction: row;
+  padding: 25px;
 }
 

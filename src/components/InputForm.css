@@ -1,8 +1,9 @@
-.input__container {
-    width: 50vw;
+.input__container{
+    text-align: center;
 }
 
 .field {
-    width: 50vw;
+    width: 35vw;
     height: 75vh;
+    border: 1px black dashed;
 }

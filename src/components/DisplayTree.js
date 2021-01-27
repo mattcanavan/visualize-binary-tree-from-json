@@ -114,18 +114,13 @@ export default function DisplayTree(props) {
         // now, we know how many levels to make
         const results = [];
         for (let i = 0; i <= max_height; i++){
-            let temp = [];
 
             // calc slicing indices
             let start = row_and_nodes[i] - 1;
             let end = row_and_nodes[i + 1] - 1; //not inclusive
 
-            // creating array for each level
-            temp.push(arrayIn.slice(start, end))
-            console.log("temp", temp)
-
-            // storing each level in another array
-            results.push(temp)
+            // slice returns an array that acts as 1 level, store these levels in another array
+            results.push(arrayIn.slice(start, end))
         }
         return results
     }
@@ -144,11 +139,13 @@ export default function DisplayTree(props) {
 
     return (
         <div className="output__container">
-            {levels && levels.forEach(element => (
-                element.forEach(item => (
-                    console.log("item", item[0])
-            ))
-            ))}
+            <h1>OUTPUT</h1>
+            <br/>
+            <br/>
+            <br/>
+            {levels && levels.map((value, index) => {
+                return <h2 key={index}>{value.join(`${'\xa0'.repeat(index)}`)}</h2>
+            })}
         </div>
     )
 }

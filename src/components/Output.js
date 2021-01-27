@@ -9,7 +9,11 @@ import { build_array_for_each_level } from '../utils/buildArrayForEachLevel.js';
 export default function Output(props) {
 
     /// LOCAL STATE ///
-    const [levels, setLevels] = React.useState();
+    const [levels, setLevels] = React.useState([
+        [5],
+        [7, 22],
+        ['None', 'None', 17, 9],
+    ]);
 
     /// PROPS ///
     const { BFTarray, JSONtree } = props;
@@ -18,7 +22,7 @@ export default function Output(props) {
     React.useEffect( () => {
         setLevels(build_array_for_each_level(BFTarray, JSONtree))
         console.log('levels', levels)
-    }, [JSONtree])
+    }, [BFTarray, JSONtree])
 
 
     /// Display nothing if there's no BFTarray
